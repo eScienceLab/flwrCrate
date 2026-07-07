@@ -55,6 +55,13 @@ jobs:
           printf '\n[tool.flwrcrate.metric-uris]\naccuracy = "https://schema.org/Accuracy"\n' >> /tmp/flcrate_pyproject.toml
           pip install -e "$APP"
 
+      # TEMPORARY WORKAROUND (see #9): grpcio 1.82.0 (2026-07-06) breaks
+      # `flower-superlink` startup, and the unpinned installs above pull it in
+      # via flwr. Pin to the last known-good grpcio until Flower/grpcio fix it.
+      # Remove this step once #9 is resolved.
+      - name: Pin grpcio (flower-superlink startup regression workaround)
+        run: pip install "grpcio<1.82" "grpcio-health-checking<1.82"
+
       - name: Run the federation
         working-directory: ${{ runner.temp }}/${{ matrix.app }}
         run: |
