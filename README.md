@@ -278,7 +278,7 @@ Testing has two tiers:
   that feed the *actual* captured output of the Tested-with apps
   (`tests/fixtures/<app>/`) through the crate builder. None of these need
   Flower, Ray, or an ML framework installed, so they run in seconds on Python
-  3.11–3.12 and enforce ≥85% coverage (currently ~92%).
+  3.11–3.14 and enforce ≥85% coverage (currently ~92%).
 - **`real-app e2e` workflow (nightly + on demand)** — actually fetches a real
   Flower Hub app with `flwr new`, runs the federation end to end, and validates
   the produced crate (`.github/workflows/realapps.yml`). This is the only tier
