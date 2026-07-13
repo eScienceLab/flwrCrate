@@ -1,5 +1,7 @@
 # flwrCrate
 
+[![PyPI](https://img.shields.io/pypi/v/flwrcrate)](https://pypi.org/project/flwrcrate/)
+[![Python versions](https://img.shields.io/pypi/pyversions/flwrcrate)](https://pypi.org/project/flwrcrate/)
 [![tests](https://github.com/eScienceLab/flwrCrate/actions/workflows/tests.yml/badge.svg)](https://github.com/eScienceLab/flwrCrate/actions/workflows/tests.yml)
 [![real-app e2e](https://github.com/eScienceLab/flwrCrate/actions/workflows/realapps.yml/badge.svg)](https://github.com/eScienceLab/flwrCrate/actions/workflows/realapps.yml)
 
