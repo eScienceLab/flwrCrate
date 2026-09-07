@@ -88,8 +88,8 @@ def test_build_crate_core_entities(tmp_path):
     assert g["#framework-torch"]["softwareVersion"] == "2.8.0"
     assert g["#flower"]["softwareVersion"] == "1.30.0"
     # #5 provenance
-    assert g["./"]["license"]["@id"] == "https://spdx.org/licenses/MIT.html"
-    assert g["./"]["author"]["@id"] == "https://orcid.org/0000-0000-0000-0001"
+    assert g["./"]["license"][0]["@id"] == "https://spdx.org/licenses/MIT.html"
+    assert g["./"]["author"][0]["@id"] == "https://orcid.org/0000-0000-0000-0001"
     assert g["#fl-run"]["agent"]["@id"] == "https://orcid.org/0000-0000-0000-0001"
 
 

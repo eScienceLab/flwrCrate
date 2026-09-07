@@ -46,7 +46,7 @@ def test_full_lifecycle_produces_complete_crate(
     assert g["#fl-strategy"]["name"] == "FedAvg"                        # #2
     assert any(i["@id"] == "metrics_log.json" for i in g["#fl-run"]["result"])  # #3
     assert "#framework-torch" in g                                      # #4
-    assert g["./"]["license"]["@id"].endswith("MIT.html")              # #5
+    assert g["./"]["license"][0]["@id"].endswith("MIT.html")               # #5
     assert g["#fl-run"]["agent"]["@id"].endswith("0000-0001")
 
     # result-side capture happened (the record_result path)
