@@ -50,14 +50,40 @@ Other requirements: Python ≥ 3.11, `rocrate ≥ 0.13`.
 
 ## Install
 
+Add `flwrcrate` to the `dependencies` of your Flower app's `pyproject.toml`:
+
+```toml
+[project]
+name = "my-flower-app"
+version = "1.0.0"
+dependencies = [
+    "flwr[simulation]>=1.29.0",
+    # ... your other dependencies ...
+    "flwrcrate>=0.4.0",
+]
+```
+
+Then (re)install your app so the dependency is picked up:
+
+```bash
+pip install -e .
+```
+
+Declaring it as a dependency guarantees flwrcrate lands in the same
+environment as your app, and it is reinstalled automatically whenever you
+set the project up in a new environment or on another machine.
+
+For a quick experiment in a scratch environment you can install it
+directly instead:
+
 ```bash
 pip install flwrcrate
 ```
 
-Install it into the **same environment that runs your Flower app** (the one
-`flwr run` uses).
+If you go this route, make sure you install it into the **same environment
+that runs your Flower app** (the one `flwr run` uses).
 
-To work from source instead:
+To work from source:
 
 ```bash
 git clone https://github.com/eScienceLab/flwrCrate.git
