@@ -74,7 +74,7 @@ class FLCrateTracker:
 
         self._capture = {
             "app_name": app_name,
-            "run_timing": {"start_time": datetime.now(timezone.utc).isoformat(), "end_time": None},
+            "run_timing": {"start_time": datetime.now(timezone.utc).isoformat(timespec="seconds"), "end_time": None},
             "environment_config": run_config,
             "federation": self._federation,
             "flower": {"version": flwr_version},
@@ -171,7 +171,7 @@ class FLCrateTracker:
             if mr is not None:
                 slot = self._per_round.setdefault(str(server_round), {})
                 slot["server_side_evaluate"] = metricrecord_to_dict(mr)
-                slot["captured_at"] = datetime.now(timezone.utc).isoformat()
+                slot["captured_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
                 self._save_metrics_log()
             return mr
 
@@ -183,7 +183,7 @@ class FLCrateTracker:
         if model_path is not None:
             self.model_path = Path(model_path)
 
-        self._capture["run_timing"]["end_time"] = datetime.now(timezone.utc).isoformat()
+        self._capture["run_timing"]["end_time"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
         for attr, label in (("train_metrics_clientapp", "train_clientapp"),
                             ("evaluate_metrics_clientapp", "evaluate_clientapp")):

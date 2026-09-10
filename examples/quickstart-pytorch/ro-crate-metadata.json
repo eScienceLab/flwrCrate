@@ -12,6 +12,9 @@
             "conformsTo": [
                 {
                     "@id": "https://esciencelab.org.uk/federated-learning-ro-crate-profile/federated-learning-profile.html"
+                },
+                {
+                    "@id": "https://w3id.org/ro/wfrun/process/0.5"
                 }
             ],
             "datePublished": "2026-06-10T10:25:49+00:00",
@@ -48,8 +51,21 @@
         },
         {
             "@id": "https://esciencelab.org.uk/federated-learning-ro-crate-profile/federated-learning-profile.html",
-            "@type": "CreativeWork",
-            "name": "Federated Learning RO-Crate profile v0.1"
+            "@type": [
+                "CreativeWork",
+                "Profile"
+            ],
+            "name": "Federated Learning RO-Crate profile",
+            "version": "0.1"
+        },
+        {
+            "@id": "https://w3id.org/ro/wfrun/process/0.5",
+            "@type": [
+                "CreativeWork",
+                "Profile"
+            ],
+            "name": "Process Run Crate",
+            "version": "0.5"
         },
         {
             "@id": "https://spdx.org/licenses/MIT.html",
@@ -65,24 +81,24 @@
             "@id": "#flower",
             "@type": "SoftwareApplication",
             "name": "Flower",
-            "softwareVersion": "1.30.0",
-            "url": "https://flower.ai/"
+            "url": "https://flower.ai/",
+            "version": "1.30.0"
         },
         {
             "@id": "#framework-torch",
             "@type": "SoftwareApplication",
             "name": "PyTorch",
             "softwareRequirements": "==2.8.0",
-            "softwareVersion": "2.8.0",
-            "url": "https://pytorch.org/"
+            "url": "https://pytorch.org/",
+            "version": "2.8.0"
         },
         {
             "@id": "#framework-torchvision",
             "@type": "SoftwareApplication",
             "name": "TorchVision",
             "softwareRequirements": "==0.23.0",
-            "softwareVersion": "0.23.0",
-            "url": "https://pytorch.org/vision/"
+            "url": "https://pytorch.org/vision/",
+            "version": "0.23.0"
         },
         {
             "@id": "#strategy-param-arrayrecord-key",
@@ -162,7 +178,9 @@
                 }
             ],
             "description": "Federated aggregation strategy (flwr.serverapp.strategy.fedavg).",
-            "name": "FedAvg"
+            "name": "FedAvg",
+            "url": "https://flower.ai/",
+            "version": "1.30.0"
         },
         {
             "@id": "final_model.pt",
@@ -185,11 +203,13 @@
                 }
             ],
             "description": "Final global model produced by the federated learning run.",
+            "encodingFormat": "application/octet-stream",
             "name": "Final aggregated model"
         },
         {
             "@id": "metrics_log.json",
             "@type": "File",
+            "contentSize": "1511",
             "description": "Per-round training and evaluation metrics, plus federation details (participant/supernode counts and configuration) for the whole run.",
             "encodingFormat": "application/json",
             "name": "Per-round metrics and federation log"
@@ -271,7 +291,7 @@
                 "@id": "https://orcid.org/0009-0000-0000-0000"
             },
             "description": "Run using strategy FedAvg (flwr.serverapp.strategy.fedavg), 3 rounds.",
-            "endTime": "2026-06-10T10:25:49.281661+00:00",
+            "endTime": "2026-06-10T10:25:49+00:00",
             "instrument": [
                 {
                     "@id": "#flower"
@@ -315,7 +335,7 @@
                     "@id": "metrics_log.json"
                 }
             ],
-            "startTime": "2026-06-10T10:25:00.091740+00:00"
+            "startTime": "2026-06-10T10:25:00+00:00"
         }
     ]
 }
