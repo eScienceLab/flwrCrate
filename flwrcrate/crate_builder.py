@@ -23,6 +23,7 @@ FL_PROFILE = (
     "https://esciencelab.org.uk/federated-learning-ro-crate-profile/"
     "federated-learning-profile.html"
 )
+PROCESS_RUN_CRATE = "https://w3id.org/ro/wfrun/process/0.5"
 FLOWER_HOMEPAGE = "https://flower.ai/"
 SCHEMA = "http://schema.org/"
 
@@ -62,12 +63,24 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
         "RO-Crate describing a federated learning run captured with flwrCrate."
     )
 
-    # Conformance to the FL profile (RO-Crate spec conformance is set by ro-crate-py).
+    # Conformance to the profiles the crate follows. RO-Crate spec conformance
+    # is set on the metadata descriptor by ro-crate-py; profile conformance
+    # goes on the root data entity, and may list several profiles.
     profile = crate.add(ContextEntity(crate, FL_PROFILE, properties={
-        "@type": "CreativeWork",
-        "name": "Federated Learning RO-Crate profile v0.1",
+        "@type": ["CreativeWork", "Profile"],
+        "name": "Federated Learning RO-Crate profile",
+        "version": "0.1",
     }))
     crate.root_dataset.append_to("conformsTo", profile)
+
+    # The FL profile extends Process Run Crate, so declare that too: it lets
+    # validators and generic provenance tools check the run structure.
+    prc = crate.add(ContextEntity(crate, PROCESS_RUN_CRATE, properties={
+        "@type": ["CreativeWork", "Profile"],
+        "name": "Process Run Crate",
+        "version": "0.5",
+    }))
+    crate.root_dataset.append_to("conformsTo", prc)
 
     # --- #5 license / author / agent scaffolding -------------------------------
     if license:
@@ -106,7 +119,7 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
     flwr_version = (captured.get("flower") or {}).get("version")
     flower_props = {"@type": "SoftwareApplication", "name": "Flower", "url": FLOWER_HOMEPAGE}
     if flwr_version:
-        flower_props["softwareVersion"] = flwr_version
+        flower_props["version"] = flwr_version
     flower = crate.add(ContextEntity(crate, "#flower", properties=flower_props))
     instruments.append(flower)
 
@@ -115,7 +128,7 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
         if fw.get("homepage"):
             props["url"] = fw["homepage"]
         if fw.get("installed_version"):
-            props["softwareVersion"] = fw["installed_version"]
+            props["version"] = fw["installed_version"]
         if fw.get("declared"):
             props["softwareRequirements"] = fw["declared"]  # spec from pyproject.toml
         ent = crate.add(ContextEntity(crate, f"#framework-{_slug(fw['package'])}", properties=props))
@@ -128,7 +141,13 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
             "@type": "SoftwareApplication",
             "name": strat["class_name"],
             "description": f"Federated aggregation strategy ({strat.get('module')}).",
+            # The strategy implements Flower's strategy API and is run by Flower,
+            # so Flower is its reference url and version (RO-Crate requires both
+            # on a SoftwareApplication).
+            "url": FLOWER_HOMEPAGE,
         }
+        if flwr_version:
+            strat_props["version"] = flwr_version
         hp_refs = []
         for k, v in (strat.get("attributes") or {}).items():
             pid = f"#strategy-param-{_slug(k)}"
@@ -145,15 +164,16 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
     results = []
     model_entity = None
     if model_path and Path(model_path).exists():
-        model_entity = crate.add_file(str(model_path), Path(model_path).name, properties={
+        model_entity = crate.add_file(str(model_path), Path(model_path).name, record_size=True, properties={
             "@type": "File",
             "name": "Final aggregated model",
             "description": "Final global model produced by the federated learning run.",
+            "encodingFormat": "application/octet-stream",
         })
         results.append(model_entity)
 
     if metrics_log_path and Path(metrics_log_path).exists():
-        log_entity = crate.add_file(str(metrics_log_path), Path(metrics_log_path).name, properties={
+        log_entity = crate.add_file(str(metrics_log_path), Path(metrics_log_path).name, record_size=True, properties={
             "@type": "File",
             "name": "Per-round metrics and federation log",
             "description": (
