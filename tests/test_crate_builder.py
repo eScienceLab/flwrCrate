@@ -85,8 +85,13 @@ def test_build_crate_core_entities(tmp_path):
     assert "additionalProperty" in g["#fl-strategy"]
     # #4 framework with declared + installed versions
     assert g["#framework-torch"]["softwareRequirements"] == "==2.8.0"
-    assert g["#framework-torch"]["softwareVersion"] == "2.8.0"
-    assert g["#flower"]["softwareVersion"] == "1.30.0"
+    assert g["#framework-torch"]["version"] == "2.8.0"
+    # #20 conformance: both profiles declared, each as a Profile entity
+    conforms = {r["@id"] for r in g["./"]["conformsTo"]}
+    assert "https://w3id.org/ro/wfrun/process/0.5" in conforms
+    assert any("federated-learning-profile" in i for i in conforms)
+    assert "Profile" in g["https://w3id.org/ro/wfrun/process/0.5"]["@type"]
+    assert g["#flower"]["version"] == "1.30.0"
     # #5 provenance
     assert g["./"]["license"][0]["@id"] == "https://spdx.org/licenses/MIT.html"
     assert g["./"]["author"][0]["@id"] == "https://orcid.org/0000-0000-0000-0001"

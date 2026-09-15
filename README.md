@@ -204,7 +204,7 @@ The crate's `@graph` contains, linked together:
 | `./` | `Dataset` | Root: name, author, license, `conformsTo` the FL profile, `mentions` the run |
 | `#fl-run` | `CreateAction` | The run: `agent`, `startTime`/`endTime`, `actionStatus`, instrument/object/result |
 | `#flower` | `SoftwareApplication` | Flower with its installed version |
-| `#framework-*` | `SoftwareApplication` | Every declared dependency (minus an infrastructure deny-list): `softwareRequirements` = the declared version spec, `softwareVersion` = the actually-installed version |
+| `#framework-*` | `SoftwareApplication` | Every declared dependency (minus an infrastructure deny-list): `softwareRequirements` = the declared version spec, `version` = the actually-installed version |
 | `#fl-strategy` | `SoftwareApplication` | The aggregation strategy with its hyperparameters as `PropertyValue`s |
 | `#param-*` | `PropertyValue` | Run configuration inputs (the action's `object`) |
 | `#metric-*` | `PropertyValue` | Final-round metrics, attached to the output model (with `propertyID` when mapped) |

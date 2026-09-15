@@ -90,11 +90,13 @@ def detect_frameworks(pyproject_path: str = "pyproject.toml") -> list:
         if known:
             display, homepage = KNOWN_FRAMEWORKS[name]
         else:
-            display, homepage = name, None
+            # Fall back to the PyPI project page so the entity still has a
+            # resolvable url, which RO-Crate requires on a SoftwareApplication.
+            display, homepage = name, f"https://pypi.org/project/{name}/"
             logger.info(
                 "Recording dependency %r as software used (not in the known-"
                 "frameworks map; add it to KNOWN_FRAMEWORKS for a friendly "
-                "name + homepage).", name,
+                "name + curated homepage).", name,
             )
         found.append({
             "package": name,
