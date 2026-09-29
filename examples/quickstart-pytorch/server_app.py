@@ -49,7 +49,7 @@ def main(grid: Grid, context: Context) -> None:
         pyproject_path="/absolute/path/to/quickstart-pytorch/pyproject.toml",
         app_name="Quickstart PyTorch (demo)",
         author={"name": "Ali Faizollah", "orcid": "https://orcid.org/0009-0000-0000-0000"},
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     ) as tracker:
         result = strategy.start(
             grid=grid,

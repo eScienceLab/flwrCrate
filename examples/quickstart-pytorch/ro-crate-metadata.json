@@ -14,7 +14,7 @@
                     "@id": "https://esciencelab.org.uk/federated-learning-ro-crate-profile/federated-learning-profile.html"
                 },
                 {
-                    "@id": "https://w3id.org/ro/wfrun/process/0.5"
+                    "@id": "https://w3id.org/ro/wfrun/process/0.6"
                 }
             ],
             "datePublished": "2026-06-10T10:25:49+00:00",
@@ -29,7 +29,7 @@
             ],
             "license": [
                 {
-                    "@id": "https://spdx.org/licenses/MIT.html"
+                    "@id": "http://spdx.org/licenses/MIT"
                 }
             ],
             "mentions": [
@@ -59,18 +59,18 @@
             "version": "0.1"
         },
         {
-            "@id": "https://w3id.org/ro/wfrun/process/0.5",
+            "@id": "https://w3id.org/ro/wfrun/process/0.6",
             "@type": [
                 "CreativeWork",
                 "Profile"
             ],
             "name": "Process Run Crate",
-            "version": "0.5"
+            "version": "0.6"
         },
         {
-            "@id": "https://spdx.org/licenses/MIT.html",
+            "@id": "http://spdx.org/licenses/MIT",
             "@type": "CreativeWork",
-            "name": "https://spdx.org/licenses/MIT.html"
+            "name": "http://spdx.org/licenses/MIT"
         },
         {
             "@id": "https://orcid.org/0009-0000-0000-0000",

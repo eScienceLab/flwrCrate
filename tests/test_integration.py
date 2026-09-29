@@ -32,7 +32,7 @@ def test_full_lifecycle_produces_complete_crate(
         pyproject_path=str(app_pyproject),
         app_name="Integration run",
         author={"name": "Ali", "orcid": "https://orcid.org/0000-0000-0000-0001"},
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     ) as tracker:
         ev = tracker.wrap_evaluate(lambda rnd, arrays: {"accuracy": 0.5 + rnd / 10})
         ev(1, None)
@@ -46,7 +46,7 @@ def test_full_lifecycle_produces_complete_crate(
     assert g["#fl-strategy"]["name"] == "FedAvg"                        # #2
     assert any(i["@id"] == "metrics_log.json" for i in g["#fl-run"]["result"])  # #3
     assert "#framework-torch" in g                                      # #4
-    assert g["./"]["license"][0]["@id"].endswith("MIT.html")               # #5
+    assert g["./"]["license"][0]["@id"] == "http://spdx.org/licenses/MIT"  # #5               # #5
     assert g["#fl-run"]["agent"]["@id"].endswith("0000-0001")
 
     # result-side capture happened (the record_result path)

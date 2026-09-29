@@ -8,7 +8,7 @@ Usage (inside server_app.py):
         context, strategy,
         output_dir="fl_crate_out",
         author="Ali",                       
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     ) as tracker:
         result = strategy.start(
             grid=grid,

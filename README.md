@@ -105,7 +105,7 @@ def main(grid: Grid, context: Context) -> None:
         pyproject_path="/absolute/path/to/your-app/pyproject.toml",  # absolute!
         app_name="My federated run",
         author={"name": "Your Name", "orcid": "https://orcid.org/0000-0000-0000-0000"},
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     ) as tracker:
         result = strategy.start(
             grid=grid,
@@ -164,7 +164,7 @@ as absolute paths.
 | `pyproject_path` | recommended | Path to your app's `pyproject.toml`. **Use an absolute path.** Default: `"pyproject.toml"` |
 | `app_name` | no | Human-readable name for the crate's root dataset |
 | `author` | no | `"Name"` or `{"name": ..., "orcid": ..., "affiliation": ...}` — becomes a `Person` entity (ORCID as `@id`) |
-| `license` | no | License for the crate root, e.g. an SPDX URL `"https://spdx.org/licenses/MIT.html"` |
+| `license` | no | License for the crate root, e.g. an SPDX URL `"http://spdx.org/licenses/MIT"` |
 | `agent` | no | Who executed the run, same format as `author`. Defaults to the author |
 
 ### Semantic metric identifiers

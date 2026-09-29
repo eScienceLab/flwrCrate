@@ -75,7 +75,7 @@ def test_build_crate_writes_metadata_file(tmp_path):
 def test_build_crate_core_entities(tmp_path):
     crate_dir = build_crate(_minimal_capture(), crate_dir=tmp_path / "ro-crate",
                             author={"name": "Ali", "orcid": "https://orcid.org/0000-0000-0000-0001"},
-                            license="https://spdx.org/licenses/MIT.html")
+                            license="http://spdx.org/licenses/MIT")
     g = _graph_by_id(crate_dir)
 
     # #1 run discoverable from root
@@ -88,12 +88,12 @@ def test_build_crate_core_entities(tmp_path):
     assert g["#framework-torch"]["version"] == "2.8.0"
     # #20 conformance: both profiles declared, each as a Profile entity
     conforms = {r["@id"] for r in g["./"]["conformsTo"]}
-    assert "https://w3id.org/ro/wfrun/process/0.5" in conforms
+    assert "https://w3id.org/ro/wfrun/process/0.6" in conforms
     assert any("federated-learning-profile" in i for i in conforms)
-    assert "Profile" in g["https://w3id.org/ro/wfrun/process/0.5"]["@type"]
+    assert "Profile" in g["https://w3id.org/ro/wfrun/process/0.6"]["@type"]
     assert g["#flower"]["version"] == "1.30.0"
     # #5 provenance
-    assert g["./"]["license"][0]["@id"] == "https://spdx.org/licenses/MIT.html"
+    assert g["./"]["license"][0]["@id"] == "http://spdx.org/licenses/MIT"
     assert g["./"]["author"][0]["@id"] == "https://orcid.org/0000-0000-0000-0001"
     assert g["#fl-run"]["agent"]["@id"] == "https://orcid.org/0000-0000-0000-0001"
 

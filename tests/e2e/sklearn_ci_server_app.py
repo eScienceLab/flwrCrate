@@ -42,7 +42,7 @@ def main(grid: Grid, context: Context) -> None:
         pyproject_path="/tmp/flcrate_pyproject.toml",
         app_name="Quickstart scikit-learn (CI e2e)",
         author={"name": "flwrCrate CI", "orcid": "https://orcid.org/0000-0000-0000-0000"},
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     ) as tracker:
         result = strategy.start(
             grid=grid,

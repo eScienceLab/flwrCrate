@@ -23,7 +23,7 @@ FL_PROFILE = (
     "https://esciencelab.org.uk/federated-learning-ro-crate-profile/"
     "federated-learning-profile.html"
 )
-PROCESS_RUN_CRATE = "https://w3id.org/ro/wfrun/process/0.5"
+PROCESS_RUN_CRATE = "https://w3id.org/ro/wfrun/process/0.6"
 FLOWER_HOMEPAGE = "https://flower.ai/"
 SCHEMA = "http://schema.org/"
 
@@ -78,7 +78,7 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
     prc = crate.add(ContextEntity(crate, PROCESS_RUN_CRATE, properties={
         "@type": ["CreativeWork", "Profile"],
         "name": "Process Run Crate",
-        "version": "0.5",
+        "version": "0.6",
     }))
     crate.root_dataset.append_to("conformsTo", prc)
 
@@ -94,7 +94,7 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
     else:
         logger.warning(
             "No license set for the RO-Crate. Pass license=... (e.g. an SPDX URL "
-            "such as 'https://spdx.org/licenses/MIT.html') to satisfy RO-Crate "
+            "such as 'http://spdx.org/licenses/MIT') to satisfy RO-Crate "
             "completeness checks."
         )
 
