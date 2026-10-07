@@ -131,7 +131,7 @@ def main(grid: Grid, context: Context) -> None:
         pyproject_path="/absolute/path/to/your-app/pyproject.toml",  # absolute!
         app_name="My federated run",
         author={"name": "Your Name", "orcid": "https://orcid.org/0000-0000-0000-0000"},
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     ) as tracker:
         result = strategy.start(
             grid=grid,
@@ -190,7 +190,7 @@ as absolute paths.
 | `pyproject_path` | recommended | Path to your app's `pyproject.toml`. **Use an absolute path.** Default: `"pyproject.toml"` |
 | `app_name` | no | Human-readable name for the crate's root dataset |
 | `author` | no | `"Name"` or `{"name": ..., "orcid": ..., "affiliation": ...}` — becomes a `Person` entity (ORCID as `@id`) |
-| `license` | no | License for the crate root, e.g. an SPDX URL `"https://spdx.org/licenses/MIT.html"` |
+| `license` | no | License for the crate root, e.g. an SPDX URL `"http://spdx.org/licenses/MIT"` |
 | `agent` | no | Who executed the run, same format as `author`. Defaults to the author |
 
 ### Semantic metric identifiers
@@ -230,7 +230,7 @@ The crate's `@graph` contains, linked together:
 | `./` | `Dataset` | Root: name, author, license, `conformsTo` the FL profile, `mentions` the run |
 | `#fl-run` | `CreateAction` | The run: `agent`, `startTime`/`endTime`, `actionStatus`, instrument/object/result |
 | `#flower` | `SoftwareApplication` | Flower with its installed version |
-| `#framework-*` | `SoftwareApplication` | Every declared dependency (minus an infrastructure deny-list): `softwareRequirements` = the declared version spec, `softwareVersion` = the actually-installed version |
+| `#framework-*` | `SoftwareApplication` | Every declared dependency (minus an infrastructure deny-list): `softwareRequirements` = the declared version spec, `version` = the actually-installed version |
 | `#fl-strategy` | `SoftwareApplication` | The aggregation strategy with its hyperparameters as `PropertyValue`s |
 | `#param-*` | `PropertyValue` | Run configuration inputs (the action's `object`) |
 | `#metric-*` | `PropertyValue` | Final-round metrics, attached to the output model (with `propertyID` when mapped) |

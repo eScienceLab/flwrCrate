@@ -62,7 +62,7 @@ def test_real_app_builds_valid_crate(app, expect, tmp_path):
         crate_dir=tmp_path / "ro-crate",
         metrics_log_path=log,
         author={"name": "Test", "orcid": "https://orcid.org/0000-0000-0000-0000"},
-        license="https://spdx.org/licenses/MIT.html",
+        license="http://spdx.org/licenses/MIT",
     )
     g = _graph(crate_dir)
 

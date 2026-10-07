@@ -67,6 +67,9 @@ def test_detect_returns_declared_and_installed(app_pyproject):
     # pytest is installed in this env, so the installed-version lookup resolves
     assert by_pkg["pytest"]["installed_version"] is not None
     assert by_pkg["pytest"]["known_framework"] is False  # not an ML framework
+    # unknown packages still get a resolvable url (RO-Crate requires one on
+    # SoftwareApplication); the PyPI project page stands in for a homepage
+    assert by_pkg["pytest"]["homepage"] == "https://pypi.org/project/pytest/"
 
 
 def test_detect_excludes_infrastructure(app_pyproject):
