@@ -299,6 +299,7 @@ it produced.
 
 ```bash
 pip install -e ".[dev]"                      # installs pytest + pytest-cov and roc-validator
+rocrate-validator cache warm -p ro-crate-1.2 -p process-run-crate-0.5   # once, for the validation tests
 pytest                                        # run the full unit + integration suite
 pytest --cov=flwrcrate --cov-report=term-missing   # with a coverage report
 ```

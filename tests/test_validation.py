@@ -1,7 +1,8 @@
 """
 Checks that the crates flwrCrate writes are valid RO-Crate 1.2 and satisfy the
-Process Run Crate profile. Validation runs offline, so these tests never depend
-on network access.
+Process Run Crate profile. Validation runs offline and reads only
+rocrate-validator's cache, so fill it once before running the tests:
+rocrate-validator cache warm -p ro-crate-1.2 -p process-run-crate-0.5
 """
 
 from rocrate_validator import models, services

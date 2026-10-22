@@ -30,6 +30,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest pytest-cov "rocrate>=0.15" "roc-validator>=0.13" "tomli>=2.0; python_version < '3.11'"
           pip install -e . --no-deps
+      
+      - name: Cache the validator's profile resources
+        # The tests validate with offline=True, which only reads rocrate-validator's
+        # cache. A fresh runner's cache is empty, so fill it first.
+        run: rocrate-validator cache warm -p ro-crate-1.2 -p process-run-crate-0.5
 
       - name: Run tests with coverage
         run: pytest -q --cov=flwrcrate --cov-report=term-missing --cov-fail-under=85
