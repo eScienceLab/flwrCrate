@@ -28,7 +28,7 @@ jobs:
         # works without a Flower install.
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov "rocrate>=0.13" "tomli>=2.0; python_version < '3.11'"
+          pip install pytest pytest-cov "rocrate>=0.15" "roc-validator>=0.13" "tomli>=2.0; python_version < '3.11'"
           pip install -e . --no-deps
 
       - name: Run tests with coverage

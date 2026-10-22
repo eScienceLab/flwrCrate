@@ -13,11 +13,11 @@ maintainers = [{ name = "Ali Feizollah", email = "faizollah2005@yahoo.com" }]
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "flwr>=1.29.0",
-    "rocrate>=0.13",
+    "rocrate>=0.15",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "pytest-cov>=4.0"]
+dev = ["pytest>=7.0", "pytest-cov>=4.0", "roc-validator>=0.13"]
 
 [project.urls]
 Homepage = "https://github.com/eScienceLab/flwrCrate"

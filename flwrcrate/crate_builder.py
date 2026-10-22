@@ -56,7 +56,7 @@ def build_crate(captured: dict, crate_dir, metrics_log_path=None, model_path=Non
     """Assemble and write an RO-Crate. Returns the crate directory path."""
     uri_map = uri_map or {}
     crate_dir = Path(crate_dir)
-    crate = ROCrate()
+    crate = ROCrate(version="1.2")
 
     crate.name = captured.get("app_name") or "Federated learning run"
     crate.description = (

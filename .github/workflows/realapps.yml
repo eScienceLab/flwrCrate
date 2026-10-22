@@ -71,8 +71,12 @@ jobs:
           done
 
       - name: Validate the generated crate
+        # rocrate-validator needs rich<14, which current Flower cannot share, so it
+        # gets its own virtual environment. The federation has finished by now.
         run: |
-          python tests/e2e/validate_crate.py \
+          python -m venv /tmp/validator
+          /tmp/validator/bin/pip install "roc-validator>=0.13"
+          /tmp/validator/bin/python tests/e2e/validate_crate.py \
             /tmp/flcrate_out/ro-crate/ro-crate-metadata.json \
             "${{ matrix.strategy }}" "${{ matrix.framework }}"
 
