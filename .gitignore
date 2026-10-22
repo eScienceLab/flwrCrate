@@ -7,7 +7,7 @@ dist/
 .eggs/
 
 # Tool output
-fl_crate_out/
+flwrcrate-ro-crate/
 *.tmp
 
 # Test / coverage artifacts

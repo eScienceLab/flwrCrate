@@ -58,13 +58,13 @@ jobs:
       - name: Run the federation
         working-directory: ${{ runner.temp }}/${{ matrix.app }}
         run: |
-          rm -rf /tmp/flcrate_out
+          rm -rf /tmp/flwrcrate-ro-crate
           # flwr run detaches the simulation when there's no TTY, so we kick it
           # off and then poll for the crate within this same step (keeping the
           # step alive so the background sim isn't killed).
           flwr run . --run-config "num-server-rounds=2" || true
           for i in $(seq 1 90); do
-            if [ -f /tmp/flcrate_out/ro-crate/ro-crate-metadata.json ]; then
+            if [ -f /tmp/flwrcrate-ro-crate/ro-crate-metadata.json ]; then
               echo "crate appeared after ~$((i*5))s"; break
             fi
             sleep 5
@@ -73,7 +73,7 @@ jobs:
       - name: Validate the generated crate
         run: |
           python tests/e2e/validate_crate.py \
-            /tmp/flcrate_out/ro-crate/ro-crate-metadata.json \
+            /tmp/flwrcrate-ro-crate/ro-crate-metadata.json \
             "${{ matrix.strategy }}" "${{ matrix.framework }}"
 
       - name: Upload the crate as an artifact
@@ -81,5 +81,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: crate-${{ matrix.app }}
-          path: /tmp/flcrate_out/ro-crate/
+          path: /tmp/flwrcrate-ro-crate/
           if-no-files-found: warn

@@ -45,7 +45,7 @@ def main(grid: Grid, context: Context) -> None:
     # relative paths resolve there, not in your project.
     with FLCrateTracker(
         context, strategy,
-        output_dir="/absolute/path/to/quickstart-pytorch/fl_crate_out",
+        output_dir="/absolute/path/to/quickstart-pytorch/flwrcrate-ro-crate",
         pyproject_path="/absolute/path/to/quickstart-pytorch/pyproject.toml",
         app_name="Quickstart PyTorch (demo)",
         author={"name": "Ali Faizollah", "orcid": "https://orcid.org/0009-0000-0000-0000"},
@@ -60,7 +60,7 @@ def main(grid: Grid, context: Context) -> None:
         )
         torch.save(result.arrays.to_torch_state_dict(), "final_model.pt")
         tracker.record_result(result, model_path="final_model.pt")  # flwrCrate (3/3b)
-    # On clean exit the RO-Crate is written to <output_dir>/ro-crate/
+    # On clean exit, <output_dir> is the RO-Crate
 
 
 def global_evaluate(server_round: int, arrays: ArrayRecord) -> MetricRecord:

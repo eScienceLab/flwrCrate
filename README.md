@@ -127,7 +127,7 @@ def main(grid: Grid, context: Context) -> None:
 
     with FLCrateTracker(
         context, strategy,
-        output_dir="/absolute/path/to/your-app/fl_crate_out",        # absolute!
+        output_dir="/absolute/path/to/your-app/flwrcrate-ro-crate",  # absolute!
         pyproject_path="/absolute/path/to/your-app/pyproject.toml",  # absolute!
         app_name="My federated run",
         author={"name": "Your Name", "orcid": "https://orcid.org/0000-0000-0000-0000"},
@@ -142,7 +142,7 @@ def main(grid: Grid, context: Context) -> None:
         )
         torch.save(result.arrays.to_torch_state_dict(), "final_model.pt")
         tracker.record_result(result, model_path="final_model.pt")
-    # On clean exit the RO-Crate is written to <output_dir>/ro-crate/
+    # On clean exit, <output_dir> is the RO-Crate
 ```
 
 That is the whole integration. On exit — **including on failure** — the crate
@@ -186,7 +186,7 @@ as absolute paths.
 |---|---|---|
 | `context` | yes | The Flower `Context` (gives access to `run_config`) |
 | `strategy` | yes | Your strategy instance (FedAvg, FedProx, …) — class, module, and hyperparameters are captured |
-| `output_dir` | recommended | Where to write outputs. **Use an absolute path.** Default: `./fl_crate_out` |
+| `output_dir` | recommended | Where to write outputs. **Use an absolute path.** Default: `./flwrcrate-ro-crate` |
 | `pyproject_path` | recommended | Path to your app's `pyproject.toml`. **Use an absolute path.** Default: `"pyproject.toml"` |
 | `app_name` | no | Human-readable name for the crate's root dataset |
 | `author` | no | `"Name"` or `{"name": ..., "orcid": ..., "affiliation": ...}` — becomes a `Person` entity (ORCID as `@id`) |
@@ -211,15 +211,20 @@ Mapped metrics get a `propertyID`; unmapped metrics still emit a plain
 
 ## Output
 
+The output folder is the RO-Crate itself:
+
 ```
-<output_dir>/
-├── captured_metadata.json   # full capture: config, frameworks, strategy, timing, final metrics
-├── metrics_log.json         # per-round metrics + federation details (referenced by the crate)
-└── ro-crate/
-    ├── ro-crate-metadata.json
-    ├── final_model.pt        # if a model_path was given
-    └── metrics_log.json
+<output_dir>/                  # default: ./flwrcrate-ro-crate
+├── ro-crate-metadata.json
+├── metrics_log.json           # per-round metrics + federation details
+└── final_model.pt             # if a model_path was given
 ```
+
+During the run, flwrCrate also keeps `captured_metadata.json` there, a record of
+everything captured so far. It is deleted once the crate is written, and kept if
+writing the crate fails. If the folder contains files flwrCrate didn't write, it
+logs a warning: they aren't described in the crate, but would travel with it if
+the folder is shared.
 
 ### What's inside `ro-crate-metadata.json`
 

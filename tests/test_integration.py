@@ -15,7 +15,7 @@ from tests.conftest import FakeContext, FakeResult, FedAvg
 
 
 def _graph(out_dir):
-    data = json.loads((out_dir / "ro-crate" / "ro-crate-metadata.json").read_text())
+    data = json.loads((out_dir / "ro-crate-metadata.json").read_text())
     return {e["@id"]: e for e in data["@graph"]}
 
 
@@ -40,6 +40,9 @@ def test_full_lifecycle_produces_complete_crate(
         tracker.record_result(fake_result, model_path=str(model))
 
     g = _graph(out)
+    # the output folder is the crate itself: no sub-folder, and the capture file is gone
+    assert sorted(p.name for p in out.iterdir()) == [
+        "final_model.pt", "metrics_log.json", "ro-crate-metadata.json"]
 
     # all five profile fixes present
     assert g["./"]["mentions"] == [{"@id": "#fl-run"}]                 # #1
@@ -119,3 +122,34 @@ def test_federation_summary_picks_up_config_hints(
     assert "fraction-evaluate" in fed
     assert "min-available-clients" in fed
     assert "learning-rate" not in fed  # not a federation key
+
+
+def test_capture_kept_when_crate_cannot_be_written(
+    tmp_path, fake_context, fake_strategy, app_pyproject, monkeypatch
+):
+    """captured_metadata.json is deleted after a successful build, so it must
+    survive as the run's only record when the build fails."""
+    def broken_build(*args, **kwargs):
+        raise OSError("disk full")
+
+    monkeypatch.setattr("flwrcrate.tracker.build_crate", broken_build)
+    out = tmp_path / "out"
+    with FLCrateTracker(fake_context, fake_strategy, output_dir=str(out),
+                        pyproject_path=str(app_pyproject)):
+        pass
+
+    assert (out / "captured_metadata.json").exists()
+
+
+def test_warns_about_files_flwrcrate_did_not_write(
+    tmp_path, fake_context, fake_strategy, app_pyproject, caplog
+):
+    """Files already in the output folder would travel with the crate, so say so."""
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "patients.csv").write_text("id,age\n1,42\n")
+    with FLCrateTracker(fake_context, fake_strategy, output_dir=str(out),
+                        pyproject_path=str(app_pyproject)):
+        pass
+    
+    assert "patients.csv" in caplog.text
