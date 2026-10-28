@@ -73,10 +73,13 @@ jobs:
       - name: Validate the generated crate
         # rocrate-validator needs rich<14, which current Flower cannot share, so it
         # gets its own virtual environment. The federation has finished by now.
+        # flwrcrate goes in without its dependencies (as in tests.yml), plus
+        # ro-crate-py, so the script can import flwrcrate.validation.
         # offline=True only reads the validator's cache, so fill it first.
         run: |
           python -m venv /tmp/validator
-          /tmp/validator/bin/pip install "roc-validator>=0.13"
+          /tmp/validator/bin/pip install "roc-validator>=0.13" "rocrate>=0.15"
+          /tmp/validator/bin/pip install -e . --no-deps
           /tmp/validator/bin/rocrate-validator cache warm -p ro-crate-1.2 -p process-run-crate-0.5
           /tmp/validator/bin/python tests/e2e/validate_crate.py \
             /tmp/flcrate_out/ro-crate/ro-crate-metadata.json \
