@@ -6,7 +6,7 @@ Usage (inside server_app.py):
 
     with FLCrateTracker(
         context, strategy,
-        output_dir="fl_crate_out",
+        output_dir="flwrcrate-ro-crate",
         author="Ali",                       
         license="http://spdx.org/licenses/MIT",
     ) as tracker:
@@ -19,7 +19,7 @@ Usage (inside server_app.py):
         )
         torch.save(result.arrays.to_torch_state_dict(), "final_model.pt")
         tracker.record_result(result, model_path="final_model.pt")
-    # On clean exit, the RO-Crate is written to output_dir/ro-crate/.
+    # On clean exit, output_dir itself becomes the RO-Crate.
 """
 
 import json
@@ -47,12 +47,12 @@ class FLCrateTracker:
     def __init__(self, context, strategy, output_dir=None,
                  pyproject_path="pyproject.toml", app_name=None,
                  author=None, license=None, agent=None):
-        self.output_dir = Path(output_dir) if output_dir else (Path.cwd() / "fl_crate_out")
+        self.output_dir = Path(output_dir) if output_dir else (Path.cwd() / "flwrcrate-ro-crate")
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.pyproject_path = pyproject_path
         self.capture_path = self.output_dir / "captured_metadata.json"
         self.metrics_log_path = self.output_dir / "metrics_log.json"
-        self.crate_dir = self.output_dir / "ro-crate"
+        self.crate_dir = self.output_dir  # the output folder is the crate itself
         self.model_path = None
         self._built = False
 
@@ -200,6 +200,24 @@ class FLCrateTracker:
         self._capture["final_metrics"] = self._final_round_metrics()
         self._save_capture()
 
+    def _warn_about_unrelated_files(self):
+        """Warn about files in the crate folder that flwrCrate didn't write.
+
+        They aren't described in the crate, but they travel with it whenever the
+        folder is shared. Hidden files such as .DS_Store are ignored.
+        """
+        ours = {"ro-crate-metadata.json", self.metrics_log_path.name}
+        if self.model_path:
+            ours.add(self.model_path.name)
+        others = sorted(p.name for p in self.crate_dir.iterdir()
+                        if p.name not in ours and not p.name.startswith("."))
+        if others:
+            logger.warning(
+                "The RO-Crate folder %s also contains files flwrCrate did not write: %s. "
+                "They are not described in the crate, but would travel with it if the "
+                "folder is shared.", self.crate_dir, ", ".join(others)
+            )
+
     def build(self):
         """Write the RO-Crate. Called automatically on clean exit."""
         if self._built:
@@ -216,6 +234,9 @@ class FLCrateTracker:
             agent=self.agent,
         )
         self._built = True
+        # The capture is only a fallback record for runs whose crate can't be written.
+        self.capture_path.unlink(missing_ok=True)
+        self._warn_about_unrelated_files()
         logger.info("RO-Crate written to %s", self.crate_dir)
         return self.crate_dir
 
