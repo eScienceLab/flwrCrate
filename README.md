@@ -46,7 +46,7 @@ grep -rn "flwr.serverapp\|strategy.start\|server_fn\|ServerAppComponents" <app>/
 - `flwr.serverapp` **and** `strategy.start` → ✅ compatible
 - `server_fn` or `ServerAppComponents` → ❌ classic API, not supported (yet)
 
-Other requirements: Python ≥ 3.11, `rocrate ≥ 0.13`.
+Other requirements: Python ≥ 3.11, `rocrate ≥ 0.15`.
 
 ## Install
 
@@ -248,11 +248,15 @@ series.
 
 ### Validation
 
-Crates validate against the official
-[`rocrate-validator`](https://github.com/crs4/rocrate-validator). Note:
-`ro-crate-py` ≥ 0.15 writes RO-Crate **1.2**, while `rocrate-validator` 0.10
-ships only a **1.1** profile, producing a single false-positive `MUST 5.3`
-(`conformsTo` version). All other REQUIRED checks pass.
+Crates declare and validate against **RO-Crate 1.2**: flwrCrate sets the
+version explicitly, so the output does not depend on which `ro-crate-py` is
+installed. The test suite and the end-to-end workflow check generated crates
+with [`rocrate-validator`](https://github.com/crs4/rocrate-validator) at the
+REQUIRED level, against the `ro-crate-1.2` and `process-run-crate-0.5`
+profiles. Process Run Crate 0.5 is based on RO-Crate 1.1, so its inherited
+checks are not reported; the RO-Crate 1.2 check covers the base rules.
+The validator's opt-in extra checks are enabled too; they flag likely mistakes, 
+such as a plain string where a link to another entity was meant.
 
 ## Tested with
 
@@ -299,7 +303,8 @@ it produced.
 ## Development
 
 ```bash
-pip install -e ".[dev]"                      # installs pytest + pytest-cov
+pip install -e ".[dev]"                      # installs pytest + pytest-cov and roc-validator
+rocrate-validator cache warm -p ro-crate-1.2 -p process-run-crate-0.5   # once, for the validation tests
 pytest                                        # run the full unit + integration suite
 pytest --cov=flwrcrate --cov-report=term-missing   # with a coverage report
 ```
