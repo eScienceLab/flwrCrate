@@ -144,12 +144,15 @@ def test_capture_kept_when_crate_cannot_be_written(
 def test_warns_about_files_flwrcrate_did_not_write(
     tmp_path, fake_context, fake_strategy, app_pyproject, caplog
 ):
-    """Files already in the output folder would travel with the crate, so say so."""
+    """Files already in the output folder would travel with the crate, so say so.
+    Hidden files count too (a .env may hold secrets), but not OS clutter like .DS_Store."""
     out = tmp_path / "out"
     out.mkdir()
     (out / "patients.csv").write_text("id,age\n1,42\n")
+    (out / ".env").write_text("API_KEY=secret\n")
+    (out / ".DS_Store").write_bytes(b"\0")
     with FLCrateTracker(fake_context, fake_strategy, output_dir=str(out),
                         pyproject_path=str(app_pyproject)):
         pass
-    
-    assert "patients.csv" in caplog.text
+
+    assert "did not write: .env, patients.csv." in caplog.text

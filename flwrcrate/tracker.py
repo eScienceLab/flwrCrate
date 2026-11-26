@@ -42,6 +42,9 @@ logger = logging.getLogger("flwrcrate")
 # run_config keys that describe the federation rather than the model/training.
 _FEDERATION_HINTS = ("client", "node", "supernode", "fraction", "min-", "partition")
 
+# Files the operating system adds to folders by itself (macOS, Windows).
+_OS_CLUTTER = {".DS_Store", "Thumbs.db", "desktop.ini"}
+
 
 class FLCrateTracker:
     def __init__(self, context, strategy, output_dir=None,
@@ -204,18 +207,19 @@ class FLCrateTracker:
         """Warn about files in the crate folder that flwrCrate didn't write.
 
         They aren't described in the crate, but they travel with it whenever the
-        folder is shared. Hidden files such as .DS_Store are ignored.
+        folder is shared.
         """
         ours = {"ro-crate-metadata.json", self.metrics_log_path.name}
         if self.model_path:
             ours.add(self.model_path.name)
         others = sorted(p.name for p in self.crate_dir.iterdir()
-                        if p.name not in ours and not p.name.startswith("."))
+                        if p.name not in ours and p.name not in _OS_CLUTTER)
         if others:
             logger.warning(
                 "The RO-Crate folder %s also contains files flwrCrate did not write: %s. "
                 "They are not described in the crate, but would travel with it if the "
-                "folder is shared.", self.crate_dir, ", ".join(others)
+                "folder is shared, so make sure none of them holds anything private, "
+                "such as data or secrets.", self.crate_dir, ", ".join(others)
             )
 
     def build(self):

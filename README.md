@@ -224,7 +224,8 @@ During the run, flwrCrate also keeps `captured_metadata.json` there, a record of
 everything captured so far. It is deleted once the crate is written, and kept if
 writing the crate fails. If the folder contains files flwrCrate didn't write, it
 logs a warning: they aren't described in the crate, but would travel with it if
-the folder is shared.
+the folder is shared. Hidden files such as `.env` count too; only clutter the
+operating system adds, such as `.DS_Store`, is ignored.
 
 ### What's inside `ro-crate-metadata.json`
 
