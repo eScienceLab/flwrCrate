@@ -156,3 +156,4 @@ def test_warns_about_files_flwrcrate_did_not_write(
         pass
 
     assert "did not write: .env, patients.csv." in caplog.text
+    assert ".DS_Store" not in caplog.text
