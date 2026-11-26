@@ -38,7 +38,7 @@ def main(grid: Grid, context: Context) -> None:
 
     with FLCrateTracker(
         context, strategy,
-        output_dir="/tmp/flcrate_out",
+        output_dir="/tmp/flwrcrate-ro-crate",
         pyproject_path="/tmp/flcrate_pyproject.toml",
         app_name="Quickstart scikit-learn (CI e2e)",
         author={"name": "flwrCrate CI", "orcid": "https://orcid.org/0000-0000-0000-0000"},
